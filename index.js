@@ -2,7 +2,7 @@
  * AutoQ
  * Automatic, dynamic callback queue.
  *
- * @version 0.2.1
+ * @version 0.2.2
  * @author Kyle Edwards <edwards.kyle.a@gmail.com>
  * @license MIT
  */
@@ -16,7 +16,7 @@ var promises = new WeakMap()
 /**
  * AutoQ class
  */
-class AutoQ {
+module.exports = class AutoQ {
 
     /**
      * Adds callbacks to queue.
@@ -29,7 +29,7 @@ class AutoQ {
      * @return AutoQ instance
      */
     add(next) {
-        let currentPromise = promises.get(this)
+        var currentPromise = promises.get(this)
         if (currentPromise) {
             currentPromise = currentPromise.then(arg => new Promise(curry(next, arg)))
         } else {
@@ -46,5 +46,3 @@ class AutoQ {
  * to resolve the supplied handler to fit the Promise spec.
  */
 function curry(f, arg) { return res => f(arg, res) }
-
-module.exports = AutoQ
