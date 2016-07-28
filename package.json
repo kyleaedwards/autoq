@@ -1,0 +1,25 @@
+{
+  "name": "autoq",
+  "version": "0.1.0",
+  "description": "Automatic, dynamic callback queue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyleaedwards/autoq.git"
+  },
+  "keywords": [
+    "async",
+    "queue",
+    "automatic",
+    "autoq"
+  ],
+  "author": "Kyle Edwards",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kyleaedwards/autoq/issues"
+  },
+  "homepage": "https://github.com/kyleaedwards/autoq#readme"
+}
