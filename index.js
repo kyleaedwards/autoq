@@ -1,44 +1,57 @@
-export default class AutoQ {
+/**
+ * AutoQ
+ * Automatic, dynamic callback queue.
+ *
+ * @version 0.2.0
+ * @author Kyle Edwards <edwards.kyle.a@gmail.com>
+ * @license MIT
+ */
 
-    constructor() {
-        this.length = 0
-        this.offset = 0
-        this.queue = []
-        this.lock = null
-    }
+/**
+ * WeakMap to privately store Promise objects for each
+ * instantiation of AutoQ.
+ */
+var promises = new WeakMap()
 
-    run() {
-        if (this.lock || !this.length) return
-        this.lock = setTimeout(() => {
-            let func = this.next()
-            if (typeof func === 'function') {
-                func(() => {
-                    this.lock = null
-                    this.run()
-                })
-            } else {
-                this.lock = null
-                this.run()
-            }
-        }, 0)
-    }
+/**
+ * AutoQ class
+ */
+class AutoQ {
 
-    add(func) {
-        this.length++
-        this.queue.push(func)
-        this.run()
-    }
-
-    next() {
-        if (!this.length) return
-        let func = this.queue[this.offset]
-        this.offset++
-        if (this.offset === this.length) {
-            this.offset = 0
-            this.length = 0
-            this.queue = []
+    /**
+     * Adds callbacks to queue.
+     * Supply functions with the signiture:
+     *   function (argument, resolve, reject) {}.
+     * If a failure callback is not supplied, success
+     * will be called under all circumstances.
+     *
+     * @param success
+     * @param failure
+     * @return AutoQ instance
+     */
+    add(success, failure) {
+        let currentPromise = promises.get(this)
+        if (typeof failure !== 'function') failure = success
+        if (currentPromise) {
+            currentPromise = currentPromise.then((arg) => {
+                return new Promise(curry(success, arg))
+            }, (reason) => {
+                return new Promise(curry(failure, reason))
+            })
+        } else {
+            currentPromise = new Promise(curry(success, null))
         }
-        return func
+        promises.set(this, currentPromise)
+        return this
     }
 
 }
+
+/**
+ * Helper function to curry the supplied argument in order
+ * to resolve the supplied success and failure handlers to
+ * fit the Promise spec.
+ */
+function curry(f, arg) { return (res, rej) => f(arg, res, rej) }
+
+module.exports = AutoQ
