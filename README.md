@@ -20,3 +20,12 @@ autoq.add(function (next) {
 ```bash
 $ npm install autoq
 ```
+
+## License
+
+  [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/autoq.svg
+[npm-url]: https://npmjs.org/package/autoq
+[downloads-image]: https://img.shields.io/npm/dm/autoq.svg
+[downloads-url]: https://npmjs.org/package/autoq
