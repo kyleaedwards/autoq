@@ -1,6 +1,6 @@
 {
   "name": "autoq",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Automatic, dynamic callback queue",
   "main": "index.js",
   "scripts": {

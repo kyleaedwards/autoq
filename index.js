@@ -2,7 +2,7 @@
  * AutoQ
  * Automatic, dynamic callback queue.
  *
- * @version 0.2.0
+ * @version 0.2.1
  * @author Kyle Edwards <edwards.kyle.a@gmail.com>
  * @license MIT
  */
@@ -21,25 +21,19 @@ class AutoQ {
     /**
      * Adds callbacks to queue.
      * Supply functions with the signiture:
-     *   function (argument, resolve, reject) {}.
+     *   function (argument, callback) {}.
      * If a failure callback is not supplied, success
      * will be called under all circumstances.
      *
-     * @param success
-     * @param failure
+     * @param next
      * @return AutoQ instance
      */
-    add(success, failure) {
+    add(next) {
         let currentPromise = promises.get(this)
-        if (typeof failure !== 'function') failure = success
         if (currentPromise) {
-            currentPromise = currentPromise.then((arg) => {
-                return new Promise(curry(success, arg))
-            }, (reason) => {
-                return new Promise(curry(failure, reason))
-            })
+            currentPromise = currentPromise.then(arg => new Promise(curry(next, arg)))
         } else {
-            currentPromise = new Promise(curry(success, null))
+            currentPromise = new Promise(curry(next, null))
         }
         promises.set(this, currentPromise)
         return this
@@ -49,9 +43,8 @@ class AutoQ {
 
 /**
  * Helper function to curry the supplied argument in order
- * to resolve the supplied success and failure handlers to
- * fit the Promise spec.
+ * to resolve the supplied handler to fit the Promise spec.
  */
-function curry(f, arg) { return (res, rej) => f(arg, res, rej) }
+function curry(f, arg) { return res => f(arg, res) }
 
 module.exports = AutoQ

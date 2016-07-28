@@ -9,10 +9,14 @@ Simple automatic, dynamic callback queue for [node](http://nodejs.org).
 var AutoQ = require('autoq')
 var autoq = new AutoQ()
 
-autoq.add(function (next) {
-    // Perform asynchronous code.
-    next()
-})
+for (let i = 0; i < 10; i++) {
+    autoq.add(function (value, next) {
+        setTimeout(function () {
+            console.log(i)
+            next()
+        }, 500)
+    })
+}
 ```
 
 ## Installation
