@@ -4,7 +4,7 @@
  * AutoQ
  * Automatic, dynamic callback queue.
  *
- * @version 0.3.0
+ * @version 0.3.1
  * @author Kyle Edwards <edwards.kyle.a@gmail.com>
  * @license MIT
  */
