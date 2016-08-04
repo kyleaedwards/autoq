@@ -1,6 +1,6 @@
 {
   "name": "autoq",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Automatic, dynamic callback queue",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "async",
     "queue",
     "automatic",
+    "promise",
     "autoq"
   ],
   "author": "Kyle Edwards",
