@@ -22,24 +22,30 @@ const autoq = new AutoQ((err) => {
 })
 
 autoq.add((arg, next) => {
+
     // Do something asynchronous.
     setTimeout(function () {
         console.log(arg) // null
         // Pass an argument to the next iteration.
         next(5)
     }, 500)
+
 })
 
 autoq.add((arg, next) => {
-    setTimeout(function () {
-        console.log(arg) // 5
-        if (arg === 5) {
-            // Will be caught by error handler provided
-            // by the constructor.
-            throw "I don't like the number 5."
-        }
-        next(arg + 1)
-    }, 500)
+
+    console.log(arg) // 5
+
+    if (arg === 5) {
+        // Will be caught by error handler provided
+        // by the constructor.
+        throw "I don't like the number 5."
+    } else {
+        setTimeout(function () {
+            next(arg + 1)
+        }, 500)
+    }
+
 })
 ```
 
